@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Loomwright — the room that engineers the loop, then runs it</title>
+<title>Loomwright — any task, the loop it needs</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B5%3C/text%3E%3C/svg%3E" />
 <style>
   :root {
     --bg:#0b0d12; --panel:#141821; --ink:#e7ecf3; --muted:#8b97a8; --line:#232a36;
-    --a:#6ea8fe; --b:#f7a072; --ok:#5fd39a; --bad:#ff6b6b; --warn:#f2c14e;
+    --a:#6ea8fe; --b:#f7a072; --ok:#5fd39a; --bad:#ff6b6b; --warn:#f2c14e; --p:#c39bf5;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
     --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   }
@@ -17,191 +17,184 @@
   .wrap { max-width:1080px; margin:0 auto; padding:40px 20px 80px; }
   h1 { font-size:30px; margin:0 0 2px; letter-spacing:-.5px; }
   .tag { color:var(--muted); font-size:17px; margin:0 0 18px; }
-  .lede { font-size:15px; max-width:780px; margin:0 0 26px; } .lede b{color:var(--a);}
-  .picker { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
-  .picker .lbl { color:var(--muted); font-size:13px; margin-right:4px; }
-  button.task { font-family:var(--sans); font-size:13.5px; color:var(--ink);
-    background:var(--panel); border:1px solid var(--line); border-radius:10px;
-    padding:9px 14px; cursor:pointer; transition:.15s; }
-  button.task:hover { border-color:var(--a); }
-  button.task.sel { border-color:var(--a); box-shadow:0 0 0 3px rgba(110,168,254,.15); }
-  button.run { background:var(--a); color:#06101f; border:none; font-weight:600;
-    border-radius:10px; padding:9px 18px; cursor:pointer; }
-  button.run:disabled { opacity:.5; cursor:default; }
-  .stage { color:var(--muted); font-size:12.5px; font-family:var(--mono); margin:14px 0 6px; }
-  .room { background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    overflow:hidden; margin-top:6px; }
-  .msg { display:flex; gap:12px; padding:9px 16px; border-top:1px solid #1a212c;
-    font-family:var(--mono); font-size:12.5px; opacity:0; transform:translateY(4px);
-    animation:in .28s forwards; }
-  @keyframes in { to { opacity:1; transform:none; } }
-  .msg:first-child { border-top:none; }
-  .who { min-width:118px; text-align:right; color:var(--a); }
-  .who.system{color:var(--warn);} .who.human{color:var(--ok);} .who.qa{color:var(--ink);font-weight:600;}
-  .body { white-space:pre-wrap; }
-  .mention { color:var(--b); }
-  .qa-line .ok{color:var(--ok);} .qa-line .bad{color:var(--bad);}
-  .verdict { margin:20px 0 6px; padding:14px 18px; border:1px solid var(--line);
-    border-radius:12px; background:linear-gradient(180deg,#11151d,#0e121a); display:none; }
-  .verdict.show{display:block;} .verdict b{color:var(--ok);}
-  details.code { margin-top:10px; border:1px solid var(--line); border-radius:10px; background:var(--panel); }
-  details.code summary { cursor:pointer; padding:10px 16px; font-size:13px; color:var(--muted); }
-  pre { margin:0; padding:0 16px 14px; font-family:var(--mono); font-size:12px;
-    color:var(--ink); overflow-x:auto; }
-  .loopcard { margin-top:14px; border:1px solid var(--line); border-radius:12px;
-    background:var(--panel); padding:14px 18px; display:none; }
-  .loopcard.show{display:block;}
-  .loopcard h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase;
-    letter-spacing:.08em; color:var(--muted); }
+  .lede { font-size:15px; max-width:800px; margin:0 0 26px; } .lede b{color:var(--a);}
+  .composer { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; }
+  .composer h2 { margin:0 0 14px; font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .row .lbl { color:var(--muted); font-size:13px; min-width:64px; }
+  input.title { flex:1; min-width:240px; background:#0e121a; border:1px solid var(--line);
+    color:var(--ink); border-radius:9px; padding:9px 12px; font-family:var(--sans); font-size:14px; }
+  .chip { font-family:var(--sans); font-size:13px; color:var(--ink); background:#0e121a;
+    border:1px solid var(--line); border-radius:999px; padding:6px 13px; cursor:pointer; transition:.12s; }
+  .chip:hover { border-color:var(--a); }
+  .chip.on { border-color:var(--a); background:rgba(110,168,254,.14); color:#cfe1ff; }
+  .chip.surf.on { border-color:var(--b); background:rgba(247,160,114,.14); }
+  button.go { background:var(--a); color:#06101f; border:none; font-weight:600; border-radius:10px;
+    padding:10px 20px; cursor:pointer; font-size:14px; }
+  .loopcard { margin-top:18px; border:1px solid var(--line); border-radius:14px; background:var(--panel); padding:16px 18px; }
+  .loopcard h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+  .pill { display:inline-block; font-family:var(--mono); font-size:11.5px; color:var(--ink);
+    border:1px solid var(--line); border-radius:999px; padding:3px 10px; margin:3px 5px 3px 0; }
+  .pill.req { border-color:#2f5a45; } .pill.adv { color:var(--muted); }
+  .pill.crit { color:var(--b); border-color:#4a382b; }
+  .pill.rec { color:var(--p); border-color:#43356b; }
+  .pill.gate { color:var(--warn); border-color:#4a3f23; }
+  .meta { font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:8px; } .meta b{color:var(--ink);}
   .fp { font-family:var(--mono); font-size:11.5px; color:var(--muted); word-break:break-all;
-    background:#0e121a; border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
-  .pill { display:inline-block; font-family:var(--mono); font-size:11px; color:var(--muted);
-    border:1px solid var(--line); border-radius:999px; padding:2px 9px; margin:2px 4px 2px 0; }
-  .pill.risk{color:var(--warn);border-color:#4a3f23;} .pill.rec{color:var(--b);border-color:#4a382b;}
+    background:#0e121a; border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-top:10px; }
+  .why { color:var(--muted); font-size:12.5px; margin:6px 0 0; padding-left:12px; border-left:2px solid var(--line); }
+  .section-h { margin:34px 0 10px; font-size:12.5px; color:var(--muted); font-family:var(--mono); }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px; }
+  .gcard { background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:12px 14px; cursor:pointer; transition:.12s; }
+  .gcard:hover { border-color:var(--a); }
+  .gcard .t { font-size:13.5px; margin-bottom:6px; } .gcard .fp { font-size:10.5px; margin-top:6px; }
+  .qa-note { margin-top:10px; padding:10px 12px; border:1px solid var(--line); border-radius:10px;
+    background:#0e121a; font-size:13px; color:var(--muted); }
+  .qa-note b { color:var(--ok); }
   footer { margin-top:38px; color:var(--muted); font-size:13px; } footer a{color:var(--a);}
-  .cmp { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
-  @media (max-width:720px){ .cmp{grid-template-columns:1fr;} .who{min-width:80px;} }
-  .cmp .fp { margin-top:4px; }
-  .cmp .h { font-size:13px; color:var(--ink); margin-bottom:4px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>🧵 Loomwright</h1>
-  <p class="tag">the room that engineers the loop, then runs it</p>
+  <p class="tag">any task → the loop it needs</p>
   <p class="lede">
     Loop engineering is the 2026 skill: the unit of agentic coding isn't the prompt,
     it's the <b>loop</b> — generate, check, revise, until a real exit condition holds.
     Everyone hand-builds those loops, and every coding-agent tool runs the
-    <b>same fixed pipeline</b> for every task. Loomwright is a Band room that
-    <b>designs a loop for the specific task and runs it</b> — and the checks below are
-    <b>real</b>: they execute the generated Python in a sandbox and pass/fail on the result.
+    <b>same fixed pipeline</b> for everything. Loomwright is a Band room that
+    <b>reads a task and synthesizes the loop that task needs</b> — the checks that gate
+    it, the critics it recruits, whether a human must sign — then runs it. Give it
+    anything below and watch the loop change.
   </p>
 
-  <div class="picker">
-    <span class="lbl">pick a task:</span>
-    <span id="tasks"></span>
-    <button class="run" id="run">▶ run the loop</button>
+  <div class="composer">
+    <h2>describe a task</h2>
+    <div class="row">
+      <span class="lbl">title</span>
+      <input class="title" id="title" value="Add biometric login to the mobile app" />
+    </div>
+    <div class="row">
+      <span class="lbl">kind</span>
+      <span id="kinds"></span>
+    </div>
+    <div class="row">
+      <span class="lbl">touches</span>
+      <span id="surfaces"></span>
+    </div>
+    <div class="row"><button class="go" id="go">⟳ synthesize the loop</button></div>
   </div>
 
-  <div class="stage" id="stage"></div>
-  <div class="room" id="room"></div>
   <div class="loopcard" id="loopcard"></div>
-  <div class="verdict" id="verdict"></div>
 
-  <div class="stage" style="margin-top:30px">— or compare both loops at a glance —</div>
-  <div class="cmp" id="cmp"></div>
+  <div class="section-h">— or click a preset; each is a real, distinct loop the room would build —</div>
+  <div class="gallery" id="gallery"></div>
 
   <footer>
-    The checks run real Python in a subprocess — a buggy revision really fails with an
-    <code>AssertionError</code>, the loop really bounces, the fix really passes. Built on
-    <a href="https://band.ai">Band</a> for the Band of Agents Hackathon (Track 2).
-    Run it yourself: <code>python demo.py</code> · <a href="https://github.com/NataliaMw/loomwright">source</a>
+    Two of these tasks ship real executable code — the loop runs the generated Python
+    in a sandbox and a buggy revision genuinely fails with an <code>AssertionError</code>
+    before the fix passes. Built on <a href="https://band.ai">Band</a> for the Band of
+    Agents Hackathon (Track 2). Run any task yourself:
+    <code>python demo.py "your task" --kind feature --touches auth,db</code> ·
+    <a href="https://github.com/NataliaMw/loomwright">source</a>
   </footer>
 </div>
 
 <script id="loom-data" type="application/json">__DATA__</script>
 <script>
 const DATA = JSON.parse(document.getElementById('loom-data').textContent);
-const T = DATA.tasks;
-let sel = 0, playing = false;
+const RULES = DATA.rules;   // synthesis rules exported from the Python architect
 
-const tasksEl = document.getElementById('tasks');
-T.forEach((t, i) => {
-  const b = document.createElement('button');
-  b.className = 'task' + (i===0?' sel':'');
-  b.textContent = t.task.title;
-  b.onclick = () => { if(playing) return; sel=i; render(); };
-  tasksEl.appendChild(b);
+const KINDS = ["bugfix","refactor","feature","migration"];
+const SURFACES = ["auth","ui","db","schema","payments","billing","pii","api","concurrency","perf","sessions","pagination"];
+let kind = "feature";
+let touches = new Set(["auth","ui","pii"]);
+
+// ---- synthesis (mirror of specialists/architect.py) ----
+function highStakes(kind, ts) {
+  const risky = new Set(["auth","billing","payments","migration","schema","pii","db","secrets","infra","data-deletion"]);
+  return [...ts].some(t => risky.has(t)) || kind === "migration";
+}
+function synthesize(title, kind, ts) {
+  const checks = [
+    {name:"compiles", required:true, why:"the code has to at least build before anything else matters"},
+    {name:"unit-tests", required:true, why:"behavior is pinned by tests, not vibes"},
+  ];
+  if (kind==="bugfix") checks.push({name:"repro-test",required:true,why:"fails before the fix, passes after"});
+  if (kind==="refactor"){ checks.push({name:"behavior-unchanged",required:true,why:"refactors must not change observable behavior"});
+    checks.push({name:"perf-no-regress",required:false,why:"a refactor that ships a slowdown is a bug"}); }
+  if (kind==="feature") checks.push({name:"acceptance-test",required:true,why:"the new behavior is demonstrated end to end"});
+  if (kind==="migration") checks.push({name:"rollback-plan",required:true,why:"every migration needs a tested way back"});
+  const seenC = new Set(checks.map(c=>c.name));
+  ts.forEach(s => { const c = RULES.checks[s]; if (c && !seenC.has(c[0])){ checks.push({name:c[0],required:c[2],why:c[1]}); seenC.add(c[0]); }});
+
+  const critics = [{handle:"RivalReviewer", lens:"adversarial correctness", rec:false}];
+  const seen = new Set(["RivalReviewer"]);
+  ts.forEach(s => { const c = RULES.critics[s]; if (c && !seen.has(c[0])){ critics.push({handle:c[0],lens:c[1],rec:true}); seen.add(c[0]); }});
+
+  const hs = highStakes(kind, ts);
+  const rationale = [
+    `kind is '${kind}', so the loop centers on ` + ({bugfix:"a reproduction test as the exit gate",
+      refactor:"behavior-equivalence, not new tests", feature:"an end-to-end acceptance test",
+      migration:"a tested rollback path"}[kind] || "the default build+test gates"),
+  ];
+  if (hs) rationale.push(`touches a high-stakes surface (${[...ts].join(", ")||"—"}), so a human gate is added and a security/privacy critic is recruited`);
+  return { title, kind, touches:[...ts], checks, critics,
+    max_revisions: kind==="bugfix"?2:3,
+    human_gate: hs ? "TechLead" : null,
+    exit_condition:"all required checks pass AND no critic still objects", rationale };
+}
+function fingerprint(L){
+  return `checks=[${L.checks.map(c=>c.name).join(",")}] critics=[${L.critics.map(c=>c.handle).join(",")}] max_rev=${L.max_revisions} gate=${L.human_gate||"none"}`;
+}
+
+// ---- render ----
+function renderLoop(L, realQA) {
+  const checks = L.checks.map(c=>`<span class="pill ${c.required?'req':'adv'}">${c.name}${c.required?'':' · advisory'}</span>`).join('');
+  const critics = L.critics.map(c=>`<span class="pill ${c.rec?'rec':'crit'}">@${c.handle}${c.rec?' · recruited':''}</span>`).join('');
+  const gate = L.human_gate ? `<span class="pill gate">⛔ ${L.human_gate} signs</span>` : '<span class="pill adv">no human gate</span>';
+  const why = L.rationale.map(r=>`<p class="why">${r}</p>`).join('');
+  document.getElementById('loopcard').innerHTML =
+    `<h3>the loop the room built for: ${L.title}</h3>`
+    + `<div>${checks}</div><div style="margin-top:6px">${critics} ${gate}</div>`
+    + `<div class="meta">exit: ${L.exit_condition} · <b>max ${L.max_revisions} revisions</b></div>`
+    + `<h3 style="margin-top:14px">why this shape</h3>${why}`
+    + `<div class="fp">${fingerprint(L)}</div>`
+    + (realQA ? `<div class="qa-note">✓ this task ships real code — in the CLI the loop <b>actually runs the tests</b>: revision 0 fails with a real AssertionError, the loop bounces, the fix passes.</div>` : '');
+}
+
+function buildChips() {
+  document.getElementById('kinds').innerHTML = KINDS.map(k=>`<span class="chip kind ${k===kind?'on':''}" data-k="${k}">${k}</span>`).join('');
+  document.getElementById('surfaces').innerHTML = SURFACES.map(s=>`<span class="chip surf ${touches.has(s)?'on':''}" data-s="${s}">${s}</span>`).join('');
+  document.querySelectorAll('.chip.kind').forEach(el=>el.onclick=()=>{ kind=el.dataset.k; buildChips(); run(); });
+  document.querySelectorAll('.chip.surf').forEach(el=>el.onclick=()=>{ const s=el.dataset.s; touches.has(s)?touches.delete(s):touches.add(s); buildChips(); run(); });
+}
+function run(){ renderLoop(synthesize(document.getElementById('title').value, kind, touches), false); }
+
+document.getElementById('go').onclick = run;
+document.getElementById('title').addEventListener('keydown', e=>{ if(e.key==='Enter') run(); });
+
+// gallery from the real Python run + extra synthesized presets
+const realTitles = new Set(DATA.tasks.map(t=>t.task.title));
+const presets = DATA.gallery;  // [{title,kind,touches}]
+document.getElementById('gallery').innerHTML = presets.map((g,i)=>{
+  const L = synthesize(g.title, g.kind, new Set(g.touches));
+  return `<div class="gcard" data-i="${i}">
+    <div class="t">${g.title}</div>
+    <span class="pill adv">${g.kind}</span>${realTitles.has(g.title)?'<span class="pill req">real QA</span>':''}
+    <div class="fp">${fingerprint(L).split(' critics')[0]}</div>
+  </div>`;
+}).join('');
+document.querySelectorAll('.gcard').forEach(el=>el.onclick=()=>{
+  const g = presets[+el.dataset.i];
+  document.getElementById('title').value = g.title;
+  kind = g.kind; touches = new Set(g.touches); buildChips();
+  renderLoop(synthesize(g.title, g.kind, new Set(g.touches)), realTitles.has(g.title));
+  window.scrollTo({top:0, behavior:'smooth'});
 });
 
-function mention(text){ return text.replace(/@([A-Za-z0-9_]+)/g,'<span class="mention">@$1</span>'); }
-
-function qaHtml(qa){
-  return qa.map(([name,passed]) =>
-    `<span class="${passed?'ok':'bad'}">${name} ${passed?'✅':'❌'}</span>`).join('  ');
-}
-
-function reset(){
-  document.querySelectorAll('.task').forEach((b,i)=>b.classList.toggle('sel',i===sel));
-  document.getElementById('room').innerHTML='';
-  document.getElementById('stage').textContent='';
-  document.getElementById('loopcard').classList.remove('show');
-  document.getElementById('verdict').classList.remove('show');
-}
-
-function render(){ reset(); buildCmp(); }
-
-function addMsg(m, delay){
-  return new Promise(res=>setTimeout(()=>{
-    const room=document.getElementById('room');
-    const el=document.createElement('div'); el.className='msg';
-    const cls = m.sender==='system'?'system':(m.sender==='TechLead'?'human':(m.sender==='QA'?'qa':''));
-    const ment = m.mentions&&m.mentions.length? m.mentions.map(x=>'@'+x).join(' ')+' ':'';
-    let body;
-    if(m.qa){ body = `ran the checks (real subprocess): <span class="qa-line">${qaHtml(m.qa.map(q=>[q[0],q[1]]))}</span>`; }
-    else { body = mention(ment+m.text); }
-    el.innerHTML = `<div class="who ${cls}">${m.sender}</div><div class="body">${body}</div>`;
-    room.appendChild(el); el.scrollIntoView({block:'nearest'});
-    res();
-  }, delay));
-}
-
-async function play(){
-  if(playing) return; playing=true; reset();
-  document.getElementById('run').disabled=true;
-  const t=T[sel];
-  const phases=[
-    [0,'phase 1 — the room designs a loop for this task'],
-  ];
-  document.getElementById('stage').textContent='phase 1 — the room designs a loop for this task';
-  let stagedRun=false;
-  for(const m of t.transcript){
-    if(!stagedRun && m.sender==='LoopRunner'){
-      document.getElementById('stage').textContent='phase 2 — run the loop: generate → real QA → revise';
-      stagedRun=true;
-    }
-    await addMsg(m, m.sender==='QA'?620:430);
-  }
-  // loop card
-  const L=t.loop;
-  const lc=document.getElementById('loopcard');
-  lc.innerHTML = `<h3>the loop the room built</h3>`
-    + L.checks.map(c=>`<span class="pill">${c.name}</span>`).join('')
-    + L.critics.map(c=>`<span class="pill ${c.recruited_on_demand?'rec':''}">@${c.handle}${c.recruited_on_demand?' · recruited':''}</span>`).join('')
-    + (L.human_gate?`<span class="pill risk">⛔ ${L.human_gate} signs</span>`:'')
-    + `<div style="margin:8px 0 6px;color:var(--muted);font-size:12.5px">exit: ${L.exit_condition} · max ${L.max_revisions} revisions</div>`
-    + `<div class="fp">${L.fingerprint}</div>`
-    + `<details class="code"><summary>▸ see the code the loop verified (real, executed)</summary>`
-    + `<pre>— first attempt (failed the real test) —\n\n${esc(t.code.buggy)}\n— the fix that passed —\n\n${esc(t.code.fixed)}</pre></details>`;
-  lc.classList.add('show');
-  const r=t.record||{};
-  const v=document.getElementById('verdict');
-  v.innerHTML=`<b>shipped.</b> ${r.revisions} revision(s), gate [${r.gate}], status ${r.status}. `
-    +`Every check above was a real subprocess run — the loop bounced on a genuine test failure, not a script.`;
-  v.classList.add('show');
-  document.getElementById('run').disabled=false; playing=false;
-}
-
-function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
-
-function buildCmp(){
-  const cmp=document.getElementById('cmp');
-  cmp.innerHTML = T.map((t,i)=>{
-    const L=t.loop;
-    return `<div class="loopcard show" style="margin-top:0">
-      <div class="h"><b>${t.task.title}</b></div>
-      <span class="pill">${t.task.kind}</span>${t.task.high_stakes?'<span class="pill risk">high-stakes</span>':''}
-      <div style="margin:8px 0">${L.checks.map(c=>`<span class="pill">${c.name}</span>`).join('')}
-      ${L.critics.map(c=>`<span class="pill ${c.recruited_on_demand?'rec':''}">@${c.handle}</span>`).join('')}
-      ${L.human_gate?`<span class="pill risk">⛔ ${L.human_gate}</span>`:''}</div>
-      <div class="fp">${L.fingerprint}</div>
-    </div>`;
-  }).join('');
-}
-
-document.getElementById('run').onclick=play;
-render();
+buildChips();
+run();
 </script>
 </body>
 </html>

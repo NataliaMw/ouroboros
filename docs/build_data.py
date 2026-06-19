@@ -20,7 +20,8 @@ sys.path.insert(0, os.path.join(_root, "shared"))
 sys.path.insert(0, _root)
 
 from band_harness import LocalRoom
-from tasks import REGISTRY
+from tasks import REGISTRY, GALLERY
+from specialists import architect
 
 import demo  # reuse the exact room wiring + recruitable critics
 
@@ -79,10 +80,19 @@ async def _capture(entry: dict) -> dict:
 async def main() -> None:
     a = await _capture(REGISTRY["a"])
     b = await _capture(REGISTRY["b"])
+    # Export the synthesis rules + gallery so the web page can build a loop for
+    # ANY task the visitor describes — the same rules the Python architect uses.
+    rules = {
+        "critics": {k: list(v) for k, v in architect.SURFACE_CRITICS.items()},
+        "checks": {k: list(v) for k, v in architect.SURFACE_CHECKS.items()},
+    }
+    gallery = [{"title": t.title, "kind": t.kind, "touches": t.touches} for t in GALLERY]
     data = {
-        "tagline": "the room that engineers the loop, then runs it",
+        "tagline": "any task → the loop it needs",
         "tasks": [a, b],
         "different": a["loop"]["fingerprint"] != b["loop"]["fingerprint"],
+        "rules": rules,
+        "gallery": gallery,
     }
     here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "data.json")
