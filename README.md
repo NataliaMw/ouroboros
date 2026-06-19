@@ -2,7 +2,13 @@
 
 ### any task → the loop it needs
 
+[![PyPI](https://img.shields.io/pypi/v/ouroboros-loop?color=e8772e&label=pypi%20·%20ouroboros-loop)](https://pypi.org/project/ouroboros-loop/)
+[![Live demo](https://img.shields.io/badge/demo-click%20%E2%96%B6%20Run%20it%20live-34d399)](https://ouroboros-rust.vercel.app/)
+&nbsp;Band of Agents Hackathon · Track 2
+
 *The snake that eats its own tail — the oldest symbol for a loop that feeds itself until it's whole.*
+
+> **🟢 Zero-effort demo (judges, start here):** **https://ouroboros-rust.vercel.app/** — click **"▶ Run it live"** and a *real* loop runs on the server (a model writes the fix, gated by a real test). No install, no keys, no terminal.
 
 **The problem:** every coding-agent tool runs the *same fixed loop* for every task — a CSS tweak and a database migration get the identical Planner→Coder→Reviewer pipeline. When the loop's exit condition is too weak for the task, confident-but-wrong code ships. **Ouroboros builds the loop the specific task needs — and a band of agents builds it, then runs it, on one audit trail.**
 
