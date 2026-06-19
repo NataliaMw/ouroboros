@@ -84,6 +84,49 @@
                 background:rgba(255,82,71,.05); font-size:11px; line-height:1.45; color:var(--muted); }
   .rail .note code { color:#ff8f7f; font-family:var(--mono); font-size:10px; }
 
+  .maincol { min-width:0; }
+  .tabbar { display:flex; gap:4px; margin-bottom:18px; border-bottom:1px solid var(--line); }
+  .tab { appearance:none; cursor:pointer; font-family:var(--sans); font-size:13px; font-weight:600;
+         color:var(--muted); background:transparent; border:none; padding:10px 16px; border-radius:10px 10px 0 0;
+         border-bottom:2px solid transparent; margin-bottom:-1px; transition:.15s; white-space:nowrap; }
+  .tab:hover { color:var(--ink); }
+  .tab.on { color:var(--scale); border-bottom-color:var(--scale); background:rgba(232,119,46,.06); }
+  .panel { display:none; animation:msgIn .28s ease both; }
+  .panel.on { display:block; }
+
+  .howcard { border:1px solid var(--line); background:var(--panel); border-radius:16px; padding:26px 28px; }
+  .howcard h2 { margin:0 0 14px; font-size:21px; font-weight:700; letter-spacing:-.02em; }
+  .howcard p { font-size:14px; color:var(--muted); line-height:1.6; margin:0 0 14px; max-width:760px; }
+  .howcard p b { color:var(--ink); }
+  .howgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:20px 0 22px; }
+  .howstep { border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:rgba(240,225,205,.02); }
+  .howstep .n { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:7px; font-family:var(--mono);
+                font-size:11px; font-weight:700; color:#1a120a; background:linear-gradient(140deg,var(--scale),var(--scale2)); margin-bottom:8px; }
+  .howstep b { display:block; font-size:13.5px; margin-bottom:3px; }
+  .howstep span:last-child { font-size:12.5px; color:var(--muted); line-height:1.5; }
+  .howreal { border-left:2px solid rgba(232,119,46,.4); padding-left:14px; }
+  .howcard code { font-family:var(--mono); font-size:12.5px; background:var(--bg2); border:1px solid var(--line2);
+                  padding:3px 9px; border-radius:7px; color:var(--scale); }
+  .howrun { background:var(--bg2); border:1px solid var(--line2); border-radius:12px; padding:16px; margin:6px 0 18px; }
+  .howrun .cap { font-family:var(--mono); font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--dim); margin-bottom:10px; }
+  .howrun code { display:block; margin-bottom:8px; }
+  .howrun .hint { font-size:11.5px; color:var(--dim); margin-left:0; display:block; margin:-4px 0 12px; }
+  .howfoot { font-size:13px; color:var(--muted); border-top:1px solid var(--line); padding-top:16px; }
+  .howfoot a { color:var(--scale); }
+
+  .term { border:1px solid var(--line2); background:#0c0a07; border-radius:14px; overflow:hidden; }
+  .term-bar { display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--panel2); border-bottom:1px solid var(--line); }
+  .term-bar .dots { display:flex; gap:7px; }
+  .term-bar .dots i { width:11px; height:11px; border-radius:50%; display:block; }
+  .term-title { font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .term-tag { margin-left:auto; font-family:var(--mono); font-size:10.5px; color:var(--scale); border:1px solid rgba(232,119,46,.35); padding:2px 9px; border-radius:20px; }
+  #rr-term { margin:0; padding:18px 18px 20px; font-family:var(--mono); font-size:12px; line-height:1.55;
+             color:#d8e4c8; white-space:pre-wrap; min-height:300px; max-height:480px; overflow:auto; background:#0c0a07; }
+  .term-foot { display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:13px 16px; border-top:1px solid var(--line); background:var(--panel); }
+  .term-cap { font-size:12.5px; color:var(--muted); }
+  .term-live { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--dim); }
+  .term-live code { font-family:var(--mono); font-size:11px; background:var(--bg2); border:1px solid var(--line2); padding:2px 7px; border-radius:6px; color:var(--scale); }
+
   .composer { border:1px solid var(--line2); background:linear-gradient(180deg,var(--panel2),var(--bg2)); border-radius:16px; padding:18px 18px 16px; margin-bottom:20px; }
   .composer .t1 { font-size:15.5px; font-weight:600; margin-bottom:3px; }
   .composer .t2 { font-size:12.5px; color:var(--muted); margin-bottom:14px; }
@@ -105,7 +148,8 @@
   .board { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
   .card { border:1px solid var(--line); background:var(--panel); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color .15s, transform .15s; animation:cardIn .4s ease both; }
   .card:hover { border-color:rgba(240,225,205,.2); transform:translateY(-1px); }
-  .card.ship { border-color:rgba(52,211,153,.45); animation:cardIn .4s ease both, shipGlow 1.2s ease-out 1 forwards; }
+  .card.ship { border-color:rgba(52,211,153,.45); box-shadow:0 0 14px rgba(52,211,153,.18); }
+  .card.ship .ringlabel { text-shadow:0 0 12px rgba(52,211,153,.4); }
   .card.hs { border-color:rgba(201,139,255,.3); }
   .ch { display:flex; align-items:center; gap:11px; padding:14px 16px; border-bottom:1px solid var(--line); }
   .ch .ico { width:30px; height:30px; flex:none; border-radius:9px; display:grid; place-items:center; font-size:15px; }
@@ -245,38 +289,67 @@
       <div class="note"><code>band_add_participant</code><br>the room recruits runtime specialists only when the task demands it.</div>
     </div>
 
-    <div>
-      <div class="composer">
-        <div class="t1">Throw a task in. The room engineers its loop.</div>
-        <div class="t2">No fixed pipeline — the loop is <b>synthesized for this task</b>: its gate, its critics, its revisions, and whether a human has to sign.</div>
-        <div class="crow">
-          <input id="draft" placeholder="e.g. &laquo;rotate session tokens when privileges change&raquo;" />
-          <button class="go" id="go">Engineer loop ↵</button>
+    <div class="maincol">
+
+      <div class="tabbar" role="tablist">
+        <button class="tab on" data-tab="loops" role="tab">⟳ Loops</button>
+        <button class="tab" data-tab="realrun" role="tab">▸ Watch a real run</button>
+        <button class="tab" data-tab="how" role="tab">✶ How it works</button>
+      </div>
+
+      <!-- TAB: LOOPS -->
+      <div class="panel on" data-panel="loops">
+        <div class="composer">
+          <div class="t1">Throw a task in. The room engineers its loop.</div>
+          <div class="t2">No fixed pipeline — the loop is <b>synthesized for this task</b>: its gate, its critics, its revisions, and whether a human has to sign.</div>
+          <div class="crow">
+            <input id="draft" placeholder="e.g. &laquo;rotate session tokens when privileges change&raquo;" />
+            <button class="go" id="go">Engineer loop ↵</button>
+          </div>
+          <div class="chips" id="chips"></div>
         </div>
-        <div class="chips" id="chips"></div>
+
+        <div class="empty" id="empty" style="display:none">
+          <div class="e1">🐍</div>
+          <div class="e2">No loops yet. Pick a task above — each one builds its own loop.</div>
+        </div>
+
+        <div class="board" id="board"></div>
       </div>
 
-      <div class="empty" id="empty" style="display:none">
-        <div class="e1">🐍</div>
-        <div class="e2">No loops yet. Pick a task above — each one builds its own loop.</div>
+      <!-- TAB: WATCH A REAL RUN -->
+      <div class="panel" data-panel="realrun">
+        <section id="realrun-section"></section>
       </div>
 
-      <div class="board" id="board"></div>
+      <!-- TAB: HOW IT WORKS -->
+      <div class="panel" data-panel="how">
+        <div class="howcard">
+          <h2>Loop engineering, run by a band of agents</h2>
+          <p>Every coding-agent tool runs the <b>same fixed loop</b> for every task — a CSS tweak and a database migration get the identical Planner→Coder→Reviewer pipeline. When the loop's exit condition is too weak, confident-but-wrong code ships.</p>
+          <p><b>Ouroboros reads a task and synthesizes the loop that task needs</b> — the checks that gate it, the critics it recruits, whether a human must sign — then a band of agents runs it on one audit trail.</p>
+          <div class="howgrid">
+            <div class="howstep"><span class="n">1</span><b>Engineer</b><span>LoopArchitect designs a LoopSpec from the task's kind + surfaces.</span></div>
+            <div class="howstep"><span class="n">2</span><b>Recruit</b><span>RivalReviewer pulls in specialists on demand via <code>band_add_participant</code>.</span></div>
+            <div class="howstep"><span class="n">3</span><b>Run</b><span>CodeAuthor writes, QAEngineer runs the real checks in a sandbox, the loop bounces.</span></div>
+            <div class="howstep"><span class="n">4</span><b>Gate &amp; ship</b><span>A human signs only when the surface is high-stakes. Ships green or hands a verified failure.</span></div>
+          </div>
+          <p class="howreal">The loop is <b>real</b>: checks execute generated Python in a sandboxed subprocess. A buggy revision genuinely fails with an <code>AssertionError</code>; only the fix passes. Open any <span style="color:var(--scale)">real-QA</span> card to read the actual code, fix, and traceback.</p>
+          <div class="howrun">
+            <div class="cap">run it on your own repo</div>
+            <code>pipx run ouroboros try</code><span class="hint">keyless · runs the real loop on a bundled buggy repo</span>
+            <code>python demo.py "your task" --kind feature --touches auth,db</code>
+          </div>
+          <div class="howfoot">
+            Built on <a href="https://band.ai">Band</a> for the Band of Agents Hackathon · Track 2 ·
+            <a href="https://github.com/NataliaMw/ouroboros">source</a>
+            <div class="sig">it eats its own tail until the tests are green. — <b>made by the neon code team</b> 🐍</div>
+          </div>
+        </div>
+      </div>
 
-      <section id="realrun-section" style="margin-top:30px"></section>
     </div>
   </div>
-
-  <footer>
-    Two tasks here ship <b>real executable code</b> — the loop runs the generated Python in a sandbox, a buggy
-    revision genuinely fails with a real <code>AssertionError</code>, and only the fix passes. Open either
-    <span style="color:var(--gold)">real-QA</span> card to read the actual code, the actual fix, and the actual
-    traceback the room saw. Built on <a href="https://band.ai">Band</a> for the Band of Agents Hackathon (Track 2).
-    Run any task yourself:
-    <br><code>python demo.py "your task" --kind feature --touches auth,db</code> ·
-    <a href="https://github.com/NataliaMw/ouroboros">source</a>
-    <div class="sig">it eats its own tail until the tests are green. — <b>made by the neon code team</b> 🐍</div>
-  </footer>
 
 </div></div>
 
@@ -520,25 +593,83 @@ function fmt(text, mentions){
   return html;
 }
 
+let lastRosterKey = "";
+let lastBoardKey = "";
 function render(){
   document.getElementById('stat-loops').textContent = loops.length;
   const rosterKeys = [...BASE_ROSTER, ...[...recruited].filter(r=>!BASE_ROSTER.includes(r))];
   document.getElementById('stat-agents').textContent = rosterKeys.length;
   document.getElementById('roster-cap').textContent = `In the room · ${rosterKeys.length}`;
 
-  document.getElementById('roster').innerHTML = rosterKeys.map(k=>{
-    const a = ag(k); const rec = !BASE_ROSTER.includes(k);
-    return `<div class="ag ${rec?'rec':''}">
-      <div class="av"><div class="badge" style="background:${a.color}">${a.initials}</div><span class="pres"></span></div>
-      <div class="who"><div class="nm">${k}</div><div class="rl">${a.role}</div></div>
-    </div>`;
-  }).join('');
+  // only rebuild the roster when its membership actually changes (else rosterIn re-fires every tick = flicker)
+  const rosterKey = rosterKeys.join("|");
+  if (rosterKey !== lastRosterKey){
+    lastRosterKey = rosterKey;
+    document.getElementById('roster').innerHTML = rosterKeys.map(k=>{
+      const a = ag(k); const rec = !BASE_ROSTER.includes(k);
+      return `<div class="ag ${rec?'rec':''}">
+        <div class="av"><div class="badge" style="background:${a.color}">${a.initials}</div><span class="pres"></span></div>
+        <div class="who"><div class="nm">${k}</div><div class="rl">${a.role}</div></div>
+      </div>`;
+    }).join('');
+  }
 
   document.getElementById('empty').style.display = loops.length ? 'none' : 'block';
-  document.getElementById('board').innerHTML = loops.map(cardHTML).join('');
-  document.querySelectorAll('[data-open]').forEach(el=> el.onclick = ()=>{ selectedId = +el.dataset.open; renderDrawer(); });
-  document.querySelectorAll('[data-replay]').forEach(el=> el.onclick = (ev)=>{ ev.stopPropagation(); replayLoop(+el.dataset.replay); });
+
+  // only rebuild the card SHELLS when the set of loops changes; otherwise patch in place
+  // (full innerHTML on every tick restarts the ring/snake CSS animations = whole-board flicker)
+  const boardKey = loops.map(l=>l.id).join("|");
+  const board = document.getElementById('board');
+  if (boardKey !== lastBoardKey){
+    lastBoardKey = boardKey;
+    board.innerHTML = loops.map(cardHTML).join('');
+    board.querySelectorAll('[data-open]').forEach(el=> el.onclick = ()=>{ selectedId = +el.dataset.open; renderDrawer(); });
+  }
+  loops.forEach(patchCard);
   renderDrawer();
+}
+
+// in-place update of a card's dynamic parts — never touches the <svg>/.snake so their animations run uninterrupted
+function patchCard(lp){
+  const root = document.querySelector(`.card[data-cardid="${lp.id}"]`);
+  if (!root) return;
+  const L = lp.L; const {s, rev} = stageOf(lp); const c = s.color;
+  root.classList.toggle('ship', s===STAGE.ship);
+
+  const ph = root.querySelector('.phase');
+  ph.style.color = c;
+  ph.querySelector('.pd').style.background = c;
+  ph.querySelector('.phtxt').textContent = s.label.replace(" ✓","");
+
+  // ring dynamic colors
+  root.querySelectorAll('[data-ringstroke]').forEach(el=> el.setAttribute('stroke', c));
+  const snake = root.querySelector('.snake');
+  snake.style.background = c; snake.style.boxShadow = `0 0 12px ${hexA(c,.7)}`;
+  root.querySelector('.ouro-c').style.color = c;
+  setNode(root.querySelector('[data-node="generate"]'), s===STAGE.generate, c);
+  setNode(root.querySelector('[data-node="critique"]'), s===STAGE.critique, c);
+  setNode(root.querySelector('[data-node="check"]'), s===STAGE.check, c);
+
+  const rl = root.querySelector('.ringlabel'); rl.style.color = c; rl.textContent = s.label;
+  root.querySelectorAll('.revdot').forEach((d,i)=>{ const on=i<rev;
+    d.style.background = on?c:'rgba(240,225,205,.12)'; d.style.boxShadow = on?'0 0 7px '+hexA(c,.6):'none'; });
+
+  // footer tail + replay
+  const revealed = lp.timeline.slice(0, lp.idx).filter(e=>e.kind==="msg");
+  const tail = revealed.length ? revealed[revealed.length-1] : null;
+  const foot = root.querySelector('.cfoot');
+  foot.innerHTML =
+    (tail ? `<span class="av" style="background:${ag(tail.who).color}">${ag(tail.who).initials}</span><span class="tx">${fmt(tail.text, tail.mentions)}</span>`
+          : `<span class="tx" style="color:var(--faint)">queued…</span>`)
+    + (lp.done ? `<button class="replay" data-replay="${lp.id}" title="replay this loop">↻ replay</button>` : '')
+    + `<span class="more">view transcript →</span>`;
+  const rep = foot.querySelector('[data-replay]');
+  if (rep) rep.onclick = (ev)=>{ ev.stopPropagation(); replayLoop(lp.id); };
+}
+function setNode(el, active, c){
+  if (!el) return;
+  if (active){ el.style.cssText = `left:${el.dataset.x};top:${el.dataset.y};border:1px solid ${c};color:#fff;background:${hexA(c,.16)};box-shadow:0 0 14px ${hexA(c,.55)}`; }
+  else { el.style.cssText = `left:${el.dataset.x};top:${el.dataset.y};border:1px solid rgba(240,225,205,.1);color:#8a7257;background:#1d140c;box-shadow:none`; }
 }
 
 function cardHTML(lp){
@@ -553,11 +684,11 @@ function cardHTML(lp){
   for (let i=0;i<L.max_revisions;i++){ const on=i<rev; dots.push(`<span class="revdot" style="background:${on?c:'rgba(240,225,205,.12)'};box-shadow:${on?'0 0 7px '+hexA(c,.6):'none'}"></span>`); }
   const criticsText = L.recruits.length ? "reviewer + " + L.recruits.map(x=>x.replace("Critic","")).join(" + ") : "1 rival reviewer";
 
-  return `<div class="card ${s===STAGE.ship?'ship':''} ${L.human_gate?'hs':''}" data-open="${lp.id}">
+  return `<div class="card ${s===STAGE.ship?'ship':''} ${L.human_gate?'hs':''}" data-open="${lp.id}" data-cardid="${lp.id}">
     <div class="ch">
       <div class="ico" style="background:${hexA(acc,.14)};border:1px solid ${hexA(acc,.3)}">${icon}</div>
       <div class="ti"><div class="task">${esc(L.title)}</div><div class="kind">${L.kind}${lp.real?' · real QA':''} · touches ${esc(L.touches.join(", ")||"—")}</div></div>
-      <div class="phase" style="color:${c}"><span class="pd" style="background:${c}"></span>${phaseText}</div>
+      <div class="phase" style="color:${c}"><span class="pd" style="background:${c}"></span><span class="phtxt">${phaseText}</span></div>
     </div>
     <div class="cbody">
       <div class="ringwrap">
@@ -565,14 +696,14 @@ function cardHTML(lp){
           <svg width="220" height="150">
             <circle cx="110" cy="75" r="58" fill="none" stroke="rgba(240,225,205,.07)" stroke-width="1.5"></circle>
             <g style="transform-box:view-box;transform-origin:110px 75px;animation:spin 16s linear infinite">
-              <circle cx="110" cy="75" r="58" fill="none" stroke="${c}" stroke-width="1.5" stroke-dasharray="3 9" stroke-linecap="round" opacity=".85"></circle>
+              <circle cx="110" cy="75" r="58" fill="none" data-ringstroke stroke="${c}" stroke-width="1.5" stroke-dasharray="3 9" stroke-linecap="round" opacity=".85"></circle>
             </g>
           </svg>
           <div class="snake" style="background:${c};box-shadow:0 0 12px ${hexA(c,.7)}"></div>
           <div class="ouro-c" style="color:${c}">🐍</div>
-          <div class="node" style="left:110px;top:17px;${node(s===STAGE.generate,c)}">Generate</div>
-          <div class="node" style="left:160px;top:104px;${node(s===STAGE.critique,c)}">Critics</div>
-          <div class="node" style="left:60px;top:104px;${node(s===STAGE.check,c)}">Check</div>
+          <div class="node" data-node="generate" data-x="110px" data-y="17px" style="left:110px;top:17px;${node(s===STAGE.generate,c)}">Generate</div>
+          <div class="node" data-node="critique" data-x="160px" data-y="104px" style="left:160px;top:104px;${node(s===STAGE.critique,c)}">Critics</div>
+          <div class="node" data-node="check" data-x="60px" data-y="104px" style="left:60px;top:104px;${node(s===STAGE.check,c)}">Check</div>
         </div>
         <div style="text-align:center;width:100%">
           <div class="ringlabel" style="color:${c}">${s.label}</div>
@@ -708,44 +839,57 @@ addTask(DATA.tasks[0].task.title);
 if (DATA.tasks[1]) timers.push(setTimeout(()=> addTask(DATA.tasks[1].task.title), reduce?0:1200));
 render();
 
-// ── Watch a real run (zero install) ──────────────────────────────────────────
-// Replays a CAPTURED run of `run_on_repo.py` on a real buggy repo — the model's
-// fix gated by the repo's own tests. Not mocked: it's the recorded transcript.
-(function realRun(){
+// ── Watch a real run ─────────────────────────────────────────────────────────
+// An honest RECORDING of an actual `run_on_repo.py` execution — the model's fix
+// gated by the repo's own tests. It is a replay, not a live shell (this page is
+// static); the live thing is `pipx run ouroboros try` on your own machine.
+let _rrTimer = null, _rrStarted = false;
+function buildRealRun(){
   const rr = DATA.realrun;
   const host = document.getElementById('realrun-section');
-  if (!rr || !host) return;
-  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  if (!rr || !host || host.dataset.built) return;
+  host.dataset.built = "1";
   host.innerHTML = `
-    <div style="border:1px solid var(--line2); background:var(--panel); border-radius:16px; overflow:hidden;">
-      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line);">
-        <span style="width:9px;height:9px;border-radius:50%;background:var(--scale);box-shadow:0 0 8px var(--scale)"></span>
-        <b style="font-size:14px">Watch a real run — no install, no keys</b>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto">run_on_repo.py · captured live</span>
+    <div class="term">
+      <div class="term-bar">
+        <span class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+        <span class="term-title">ouroboros — run_on_repo.py</span>
+        <span class="term-tag">● recorded run</span>
       </div>
-      <pre id="rr-term" style="margin:0;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--ink);white-space:pre-wrap;min-height:120px;max-height:420px;overflow:auto;background:var(--bg2)"></pre>
-      <div style="padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-        <button id="rr-play" style="appearance:none;border:none;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:12.5px;color:#11160f;background:linear-gradient(140deg,var(--scale),var(--scale2));padding:7px 15px;border-radius:9px">▶ replay</button>
-        <span style="font-size:12px;color:var(--muted)">${esc(rr.caption||'')}</span>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto">or run it yourself: <code style="color:var(--scale)">pipx run ouroboros try</code></span>
+      <pre id="rr-term"></pre>
+      <div class="term-foot">
+        <button id="rr-play" class="go" style="padding:7px 15px;font-size:12.5px">↻ replay recording</button>
+        <span class="term-cap">${esc(rr.caption||'')}</span>
+        <span class="term-live">run it live on your repo → <code>pipx run ouroboros try</code></span>
       </div>
     </div>`;
   const term = host.querySelector('#rr-term');
   const lines = rr.transcript.split('\n');
-  let t = null;
   function play(){
-    if (t) clearInterval(t);
-    term.textContent = ''; let i = 0;
+    if (_rrTimer) clearInterval(_rrTimer);
     if (reduce){ term.textContent = rr.transcript; return; }
-    t = setInterval(()=>{
-      if (i >= lines.length){ clearInterval(t); return; }
+    term.textContent = ''; let i = 0;
+    _rrTimer = setInterval(()=>{
+      if (i >= lines.length){ clearInterval(_rrTimer); _rrTimer=null; return; }
       term.textContent += (i?'\n':'') + lines[i++];
       term.scrollTop = term.scrollHeight;
-    }, 90);
+    }, 75);
   }
   host.querySelector('#rr-play').onclick = play;
-  play();
-})();
+  return play;
+}
+function startRealRun(){
+  const play = buildRealRun() || (()=>{});
+  if (!_rrStarted){ _rrStarted = true; play(); }
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab=> tab.onclick = ()=>{
+  const name = tab.dataset.tab;
+  document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('on', t===tab));
+  document.querySelectorAll('.panel').forEach(p=> p.classList.toggle('on', p.dataset.panel===name));
+  if (name==='realrun') startRealRun();
+});
 </script>
 </body>
 </html>
