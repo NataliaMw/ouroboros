@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ouroboros"
+name = "ouroboros-loop"
 version = "0.1.0"
 description = "Any task → the loop it needs. A band of agents on Band that engineers a verification loop per task, then runs it on your real code until your real tests pass."
 readme = "README.md"
@@ -31,6 +31,7 @@ live = [
 
 [project.scripts]
 ouroboros = "cli:main"
+ouroboros-loop = "cli:main"
 
 [tool.setuptools]
 py-modules = ["cli", "demo", "run_on_repo", "qa", "tasks", "loopspec", "models",

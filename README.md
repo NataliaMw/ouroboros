@@ -6,12 +6,18 @@
 
 **The problem:** every coding-agent tool runs the *same fixed loop* for every task — a CSS tweak and a database migration get the identical Planner→Coder→Reviewer pipeline. When the loop's exit condition is too weak for the task, confident-but-wrong code ships. **Ouroboros builds the loop the specific task needs — and a band of agents builds it, then runs it, on one audit trail.**
 
-> **Try it:** https://nataliamw.github.io/ouroboros/ — describe *your* task; the loop synthesizes live.
-> **Run the loop on YOUR repo:**
+> **Try it in the browser (zero install):** https://nataliamw.github.io/ouroboros/ — describe *your* task and the loop synthesizes live; scroll to **"Watch a real run"** to see the loop fix real code, gated by real tests.
+>
+> **Run the real loop yourself — no clone, no keys** (it's published on PyPI):
 > ```bash
-> python run_on_repo.py --repo ../your-project --test "pytest -q" --file src/thing.py --goal "fix the bug"
+> pipx run ouroboros-loop try     # runs the loop on a bundled buggy repo, end-to-end, keyless
+> pipx run ouroboros-loop demo    # the keyless deterministic loop on two tasks (real subprocess QA)
 > ```
-> It runs *your* real test command in a generate→test→revise loop until your tests pass — or hands you a verified failure. No fixtures, your code.
+> **Point it at YOUR repo + YOUR tests:**
+> ```bash
+> pipx run ouroboros-loop run --repo ../your-project --test "pytest -q" --file src/thing.py --goal "fix the bug"
+> ```
+> It runs *your* real test command in a generate→test→revise loop until your tests pass — or hands you a verified failure. No fixtures, your code. (Add `AIMLAPI_API_KEY` to let a model write the fixes.)
 >
 > **…or as a live Band room of 6 agents working on your repo:**
 > ```bash
