@@ -72,6 +72,26 @@ def run_repro_test(code: str, repro: str) -> CheckResult:
     return CheckResult("repro-test", ok, detail)
 
 
+def run_command(cmd: str, cwd: str, timeout: float = 120.0) -> CheckResult:
+    """Run the user's OWN test command in their OWN repo. This is the useful path:
+    no fixtures, no stand-in — `cmd` is whatever proves the code works for them
+    (`pytest -q`, `npm test`, `go test ./...`, `make check`, ...). The check passes
+    iff that command exits 0. The loop is gated on the user's real signal."""
+    import shlex
+    try:
+        proc = subprocess.run(
+            shlex.split(cmd) if os.name != "nt" else cmd,
+            capture_output=True, text=True, timeout=timeout, cwd=cwd,
+        )
+    except FileNotFoundError as e:
+        return CheckResult(cmd, False, f"command not found: {e}")
+    except subprocess.TimeoutExpired:
+        return CheckResult(cmd, False, f"timed out after {timeout}s")
+    out = (proc.stdout + proc.stderr).strip()
+    tail = "\n".join(out.splitlines()[-15:])
+    return CheckResult(cmd, proc.returncode == 0, tail or f"exit {proc.returncode}")
+
+
 def evaluate(check_name: str, code: str, tests: dict) -> CheckResult:
     """Dispatch a named check to a real execution. Unknown checks (advisory ones
     we don't execute, like perf) return a passing advisory result so the loop is

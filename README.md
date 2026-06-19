@@ -1,11 +1,27 @@
 # 🧵 Loomwright
 
-### the room that engineers the loop, then runs it
+### any task → the loop it needs
 
-> **Live demo:** https://nataliamw.github.io/loomwright/ — two tasks, two different loops, side by side.
-> **Run it offline in 10 seconds (no keys):** `python demo.py`
+> **Try it:** https://nataliamw.github.io/loomwright/ — describe *your* task; the loop synthesizes live.
+> **Run the loop on YOUR repo:**
+> ```bash
+> python run_on_repo.py --repo ../your-project --test "pytest -q" --file src/thing.py --goal "fix the bug"
+> ```
+> It runs *your* real test command in a generate→test→revise loop until your tests pass — or hands you a verified failure. No fixtures, your code.
 >
 > **Band of Agents Hackathon · Track 2 — Multi-Agent Software Development**
+
+---
+
+## Why it's useful (not a toy)
+
+Point Loomwright at a real project and a real test command. It runs the loop on
+*your* code: your tests are the exit gate, a model patches the target file using the
+**real failure output**, and it only ships a change your own suite accepts. Verified
+end-to-end — on a real repo with a real `pytest` bug, the loop failed on a genuine
+`AssertionError`, patched the file via AI/ML API, re-ran the suite, and shipped the
+fix in one revision. If it can't make your tests pass in the budget, it stops and
+hands you a *verified failure* instead of a confident wrong answer.
 
 ---
 
