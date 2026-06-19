@@ -29,6 +29,12 @@ That's vibe coding with extra steps.
 the specific task*, then *run it* — and pull in the specialists that task needs, on
 demand. Loop engineering, done by a band of agents instead of by hand.
 
+And the loop is **real**: the checks don't fake pass/fail from a fixture — they
+execute the generated Python in a sandboxed subprocess. A buggy revision genuinely
+fails with an `AssertionError`, the loop genuinely bounces, and the fix (written by a
+live AI/ML API model when keys are present, or a deterministic fallback when they're
+not) only ships once it *actually passes the tests*.
+
 ## What it does (in one run)
 
 `python demo.py` feeds the room two different tasks and you watch it build two
@@ -59,10 +65,11 @@ Three agents, two phases, all on one Band room transcript:
   adds it.
 
 **Phase 2 — run the loop**
-- **@LoopRunner** (Pydantic AI) executes the assembled loop: generate a revision,
-  let every critic (including the recruited one) attack it, evaluate the required
-  checks, and decide — stop, revise again, or pause for the human gate. Each
-  revision is a real `@mention` bounce in the room.
+- **@LoopRunner** (Pydantic AI) executes the assembled loop: generate a revision
+  (live via **AI/ML API** when keyed), let every critic (including the recruited one)
+  attack it, **really run the required checks in a subprocess** (`qa.py`), and decide
+  — stop, revise again, or pause for the human gate. Each revision is a real
+  `@mention` bounce in the room, and **@QA posts the real ✅/❌ results** into it.
 
 Take Band out and this is impossible: the loop's *design* and its *execution* live
 on the **same audit trail**, so you can read the loop a room built before you trust
@@ -101,9 +108,11 @@ user ──"new task"──▶ @LoopArchitect ──proposes loop──▶ @Loop
 | File | Role |
 |---|---|
 | `loopspec.py` | the `Task` and `LoopSpec` — the inspectable loop artifact |
+| `qa.py` | **real QA** — executes generated code + tests in a sandboxed subprocess |
+| `tasks.py` | concrete tasks with real buggy/fixed code + tests the loop runs |
 | `specialists/architect.py` | **@LoopArchitect** — proposes a loop for the task |
 | `specialists/critic.py` | **@LoopCritic** — attacks it, recruits specialists on demand |
-| `specialists/runner.py` | **@LoopRunner** — runs generate→critique→revise to the exit condition |
+| `specialists/runner.py` | **@LoopRunner** — runs generate→(real QA)→revise to the exit condition |
 | `shared/band_harness.py` | thin Band wrapper + offline `LocalRoom` with `recruit()` |
 | `demo.py` | deterministic two-task demo (zero credentials) |
 | `band_agents.py` | live Band path (`thenvoi` SDK + credentials) |
