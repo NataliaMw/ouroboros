@@ -65,6 +65,10 @@ class Specialist:
             f"You are @{self.handle}, the {self.role}.\n\n{mission}\n\n"
             f"You collaborate with other agents inside a shared Band room. Keep "
             f"responses tight — the room transcript is the audit trail.{handoff}"
+            f"\n\nNO CHITCHAT: never thank, greet, or acknowledge. No filler. State "
+            f"your result and hand off, or stop. If your step is done and the loop is "
+            f"finished (tests PASS and finalized), say nothing further — do not reply "
+            f"to pleasantries. One message per turn, then wait for an @mention."
         )
 
 

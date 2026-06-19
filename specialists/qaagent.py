@@ -49,13 +49,14 @@ async def handle(room, message) -> None:
     )
 
 
-def specialist():
+def specialist(tools: list | None = None):
     from band_harness import Specialist
 
     def adapter_factory():
         from band.adapters.pydantic_ai import PydanticAIAdapter
 
-        return PydanticAIAdapter(model="openai-chat:gpt-4o-mini")
+        return PydanticAIAdapter(model="openai-chat:gpt-4o-mini",
+                                 additional_tools=tools or None)
 
     return Specialist(
         handle=HANDLE, role=ROLE, adapter_factory=adapter_factory,

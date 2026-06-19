@@ -9,6 +9,12 @@
 > ```
 > It runs *your* real test command in a generate→test→revise loop until your tests pass — or hands you a verified failure. No fixtures, your code.
 >
+> **…or as a live Band room of 6 agents working on your repo:**
+> ```bash
+> python band_repo.py --repo ../your-project --test "pytest -q" --file src/thing.py --goal "fix the bug"
+> ```
+> Six agents register on Band, connect over WebSocket, and coordinate the loop through `@mention` handoffs — and two of them carry real tools: `@QAEngineer` runs your test command, `@CodeAuthor` patches your file. *Verified live: the room fixed a real bug in a real repo and only finalized once the real tests went green.*
+>
 > **Band of Agents Hackathon · Track 2 — Multi-Agent Software Development**
 
 ---
