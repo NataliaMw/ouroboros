@@ -8,7 +8,7 @@
 
 *The snake that eats its own tail — the oldest symbol for a loop that feeds itself until it's whole.*
 
-> **🟢 Zero-effort demo (judges, start here):** **https://ouroboros-rust.vercel.app/** — click **"▶ Run it live"** and a *real* loop runs on the server (a model writes the fix, gated by a real test). No install, no keys, no terminal.
+> **🟢 Zero-effort demo (judges, start here):** **https://ouroboros-rust.vercel.app/** — click **"▶ Run it live"** and a *real* loop runs on the server (a model writes the fix, gated by a real test), **then posts the whole coordination into a real Band room** — each step a real message from a real Band agent, @mentioning the next. You get a clickable **"open it on Band ↗"** link to inspect the live transcript. No install, no keys, no terminal.
 
 **The problem:** every coding-agent tool runs the *same fixed loop* for every task — a CSS tweak and a database migration get the identical Planner→Coder→Reviewer pipeline. When the loop's exit condition is too weak for the task, confident-but-wrong code ships. **Ouroboros builds the loop the specific task needs — and a band of agents builds it, then runs it, on one audit trail.**
 
