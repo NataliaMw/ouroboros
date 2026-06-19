@@ -87,14 +87,22 @@ async def main() -> None:
         "checks": {k: list(v) for k, v in architect.SURFACE_CHECKS.items()},
     }
     gallery = [{"title": t.title, "kind": t.kind, "touches": t.touches} for t in GALLERY]
+    here = os.path.dirname(os.path.abspath(__file__))
+    # A captured REAL run of run_on_repo (rev0 real AssertionError → fix → green),
+    # so the page can replay it with zero install. Captured by hand into realrun.json.
+    realrun = None
+    rr_path = os.path.join(here, "realrun.json")
+    if os.path.isfile(rr_path):
+        with open(rr_path) as f:
+            realrun = json.load(f)
     data = {
         "tagline": "any task → the loop it needs",
         "tasks": [a, b],
         "different": a["loop"]["fingerprint"] != b["loop"]["fingerprint"],
         "rules": rules,
         "gallery": gallery,
+        "realrun": realrun,
     }
-    here = os.path.dirname(os.path.abspath(__file__))
     out = os.path.join(here, "data.json")
     with open(out, "w") as f:
         json.dump(data, f, indent=2)
