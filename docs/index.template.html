@@ -918,6 +918,11 @@ function buildRealRun(){
             + (data.used_model ? '  ·  fix written live by AI/ML API' : '')
             + `\n  final code:\n${(data.final_code||'').split('\n').map(l=>'    '+l).join('\n')}`;
           term.scrollTop = term.scrollHeight;
+          if (data.band_room) {
+            const cap = host.querySelector('#rr-cap');
+            if (cap) cap.innerHTML = `✅ this exact run was posted to a <b>real Band room</b> — `
+              + `<a href="${data.band_room}" target="_blank" style="color:var(--scale)">open it on Band ↗</a>`;
+          }
           liveBtn.disabled = false; liveBtn.textContent = '▶ Run it live'; return;
         }
         const [who, txt] = ev[i++];

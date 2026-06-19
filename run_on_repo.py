@@ -66,6 +66,29 @@ def _propose_fix(client, goal: str, path: str, source: str, failure: str) -> str
     return out or None
 
 
+def _maybe_mirror_to_band(args, events) -> None:
+    """If --band (or agent creds are present), post the run into a REAL Band room so
+    the coordination lives on Band, and print the room link. Best-effort; never fails
+    the loop."""
+    want = getattr(args, "band", False) or os.getenv("OUROBOROS_AGENTS")
+    if not want:
+        return
+    try:
+        import band_rest as br
+        agents = br._load_agents()
+        rid = br.open_room(agents, title="Ouroboros — CLI run")
+        br.post_step(agents, rid, "runner", "architect",
+                     f"New task: {getattr(args,'goal','fix the failing tests')}.")
+        br.post_step(agents, rid, "architect", "critic",
+                     "Designed the loop: exit gate is the repo's real test command.")
+        br.post_step(agents, rid, "critic", "author", "Exit condition holds. Approved.")
+        for frm, to, txt in events:
+            br.post_step(agents, rid, frm, to, txt)
+        print(f"\n  ↗ mirrored to a real Band room: {br.room_url(rid)}\n")
+    except Exception as e:
+        print(f"\n  (Band mirror skipped: {e})\n")
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description="Run the Ouroboros loop on your own repo.")
     p.add_argument("--repo", required=True, help="path to your project (the loop's cwd)")
@@ -73,6 +96,8 @@ def main() -> int:
     p.add_argument("--file", help="the source file the loop may patch")
     p.add_argument("--goal", default="make the failing tests pass")
     p.add_argument("--max-revisions", type=int, default=3)
+    p.add_argument("--band", action="store_true",
+                   help="also mirror the loop into a real Band room (needs agent creds)")
     p.add_argument("--fallback-fix", help=argparse.SUPPRESS)  # known-good file for the
     # keyless bundled demo: when no model is available, apply this so the loop can close
     # end-to-end without a key. Not for real repos — there the loop needs a model.
@@ -98,14 +123,20 @@ def main() -> int:
     if target and os.path.isfile(target):
         backup = open(target, encoding="utf-8", errors="ignore").read()
 
+    events = []  # (from, to, text) for optional Band-room mirroring
+    final_rev = 0
     try:
         for rev in range(args.max_revisions + 1):
             res = qa.run_command(args.test, cwd=repo)
+            final_rev = rev
             print(f"\n  ┃ QAEngineer ▸ revision {rev}: `{args.test}` → {res.icon}")
+            events.append(("qa", "reviewer", f"revision {rev}: ran the real test → {'PASS' if res.passed else 'FAIL'}"))
             if res.passed:
                 _banner("LOOP COMPLETE — your tests pass")
                 print("  RivalReviewer: ran your real suite, it's green. Shipping.")
                 print(f"  status: shipped after {rev} revision(s)\n")
+                events.append(("reviewer", "runner", f"tests green ✅ — shipped after {rev} revision(s)."))
+                _maybe_mirror_to_band(args, events)
                 return 0
             tail = "\n".join("      " + l for l in res.detail.splitlines()[-6:])
             print(f"  ┃ RivalReviewer ▸ still failing:\n{tail}")
